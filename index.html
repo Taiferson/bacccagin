@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Baccagin | Control Tower & Sourcing de Transportes</title>
+  <!-- Font Awesome 6 (gratuito, ícones) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Inter + Outros -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fc;
+      color: #1A2C3E;
+      scroll-behavior: smooth;
+    }
+
+    /* Efeito gradiente de fundo sutil */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: radial-gradient(circle at 10% 20%, rgba(0, 102, 102, 0.03), rgba(2, 48, 71, 0.02));
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header / Navbar */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #0B3B3F, #008080);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo p {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #4A627A;
+      letter-spacing: 0.3px;
+    }
+
+    .social-header {
+      display: flex;
+      gap: 20px;
+    }
+
+    .social-icon {
+      font-size: 1.7rem;
+      transition: all 0.2s ease;
+      color: #2c3e50;
+      background: white;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .social-icon i {
+      font-size: 1.8rem;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      background: #ffffff;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .whatsapp-icon {
+      color: #25D366;
+    }
+    .instagram-icon {
+      color: #E4405F;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      padding: 48px 0 64px;
+    }
+
+    .hero-content {
+      flex: 1.2;
+    }
+
+    .hero-badge {
+      background: #EFF6F6;
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #006D77;
+      margin-bottom: 20px;
+    }
+
+    .hero-content h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      color: #0A2B33;
+    }
+
+    .hero-content h2 span {
+      background: linear-gradient(120deg, #008080, #20B2AA);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #2C475E;
+      margin-bottom: 32px;
+      max-width: 550px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      font-weight: 700;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #006D77;
+    }
+
+    .hero-image {
+      flex: 0.9;
+      background: linear-gradient(145deg, #D9E8E6, #C2D9D6);
+      border-radius: 40px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 25px 35px -12px rgba(0,0,0,0.1);
+    }
+
+    .hero-image i {
+      font-size: 8rem;
+      color: #2C6E6B;
+      opacity: 0.8;
+    }
+
+    /* Seção serviços principais */
+    .services {
+      padding: 70px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      text-align: center;
+      color: #4a627a;
+      margin-bottom: 48px;
+      font-size: 1rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: white;
+      padding: 28px 24px;
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 35px -12px rgba(0, 109, 119, 0.15);
+      border-color: rgba(0, 109, 119, 0.2);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      background: #E9F5F4;
+      width: 65px;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      color: #006D77;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .card p {
+      color: #3D5A73;
+      line-height: 1.45;
+    }
+
+    /* Seção de alta performance + sourcing */
+    .highlights {
+      background: #FFFFFFE6;
+      border-radius: 48px;
+      margin: 40px 0 60px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.02);
+      border: 1px solid #eef2f5;
+    }
+
+    .flex-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .high-text {
+      flex: 1.3;
+    }
+    .high-text h3 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .high-text ul {
+      list-style: none;
+      margin-top: 20px;
+    }
+    .high-text li {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+    }
+    .high-text li i {
+      color: #00A896;
+      font-size: 1.3rem;
+      width: 26px;
+    }
+
+    .high-icon {
+      flex: 0.7;
+      text-align: center;
+      background: #F0F7F5;
+      border-radius: 50px;
+      padding: 25px;
+    }
+    .high-icon i {
+      font-size: 5rem;
+      color: #008080;
+    }
+
+    /* Call to action whatsapp */
+    .cta-whatsapp {
+      background: linear-gradient(115deg, #0F4C5C, #128C7E);
+      border-radius: 36px;
+      padding: 40px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin: 40px 0 50px;
+      color: white;
+    }
+
+    .cta-text h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .cta-text p {
+      margin-top: 10px;
+      opacity: 0.9;
+    }
+    .btn-whatsapp {
+      background: white;
+      padding: 14px 32px;
+      border-radius: 60px;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #075E54;
+      transition: 0.2s;
+      font-size: 1.1rem;
+    }
+    .btn-whatsapp i {
+      font-size: 1.6rem;
+    }
+    .btn-whatsapp:hover {
+      background: #f0f0f0;
+      transform: scale(1.02);
+    }
+
+    /* Rodapé */
+    footer {
+      border-top: 1px solid #DFE6E9;
+      padding: 32px 0;
+      margin-top: 40px;
+      text-align: center;
+      color: #5F7F9A;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-icons a {
+      font-size: 1.7rem;
+      margin-left: 20px;
+      text-decoration: none;
+    }
+
+    @media (max-width: 800px) {
+      .hero-content h2 {
+        font-size: 2.2rem;
+      }
+      .navbar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .cta-whatsapp {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+      .footer-icons {
+        margin-top: 15px;
+      }
+      footer {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+    @media (max-width: 550px) {
+      .hero-stats {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="container">
+  <!-- Header -->
+  <div class="navbar">
+    <div class="logo">
+      <h1>BACCAGIN<span style="color:#008080">.</span></h1>
+      <p>Control Tower & Sourcing de Transportes</p>
+    </div>
+    <div class="social-header">
+      <!-- Link WhatsApp com ícone e número correto, abre app web ou nativo -->
+      <a href="https://wa.me/5516993830355?text=Olá%2C%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20servi%C3%A7os%20de%20log%C3%ADstica!" 
+         class="social-icon whatsapp-icon" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <!-- Link Instagram correto -->
+      <a href="https://www.instagram.com/baccaginn1/" class="social-icon instagram-icon" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero principal -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">✔️ Alta Performance & Gestão de Riscos</div>
+      <h2>Potência em <span>Logística</span> <br> e Controle de Frotas</h2>
+      <p>Control Tower + Sourcing especializado. Monitoramento em tempo real, performance de transportes e agenciamento de veículos. Soluções para quem exige eficiência e redução de custos.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-number">+98%</span><br>Entregas no prazo</div>
+        <div class="stat"><span class="stat-number">-22%</span><br>Custo operacional</div>
+        <div class="stat"><span class="stat-number">24/7</span><br>Monitoramento ativo</div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <i class="fas fa-truck-ramp-box"></i>
+      <i class="fas fa-chart-line" style="font-size: 3.5rem; margin-left: 12px;"></i>
+      <div style="font-weight:600; margin-top:16px;">PowerBy Baccagin</div>
+    </div>
+  </div>
+
+  <!-- Grid de serviços completos -->
+  <div class="services">
+    <div class="section-title">Soluções Integradas</div>
+    <div class="section-sub">Gestão de Frotas · Riscos · Sistemas de Alta Performance · Agenciamento</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-tower-cell"></i></div>
+        <h3>Control Tower</h3>
+        <p>Central de comando unificada: rastreamento, cross-docking, indicadores em tempo real e tomada de decisão ágil. Visibilidade ponta a ponta da sua cadeia.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Sourcing de Transportes</h3>
+        <p>Análise de mercado, negociação com carriers e seleção estratégica de parceiros. Reduza custos sem comprometer a qualidade e o prazo.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <h3>Gestão de Frotas</h3>
+        <p>Manutenção preventiva, telemetria, controle de combustível e indicadores de performance (KPI’s) para frota própria ou terceirizada.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Gestão de Riscos</h3>
+        <p>Mapeamento de rotas, compliance, seguros, análise de sinistros e planos de contingência. Segurança operacional em cada etapa.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-car-side"></i></div>
+        <h3>Agenciamento de Veículos</h3>
+        <p>Renovação, locação e aquisição inteligente de veículos leves e pesados. Melhores condições com fornecedores credenciados.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-chart-simple"></i></div>
+        <h3>Monitoramento & Performance</h3>
+        <p>Dashboards, OKR’s e análise preditiva. Acompanhamento 360º de entregas, motoristas e indicadores logísticos para alta performance.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção de Diferenciais + Sistema de Alta Performance -->
+  <div class="highlights">
+    <div class="flex-highlights">
+      <div class="high-text">
+        <h3><i class="fas fa-microchip"></i> Sistemas de Alta Performance e PowerBy</h3>
+        <p>Plataforma proprietária de integração de dados, analytics e automação de processos logísticos. Tenha uma operação escalável, com relatórios gerenciais e alertas inteligentes.</p>
+        <ul>
+          <li><i class="fas fa-check-circle"></i> Roteirização dinâmica com IA</li>
+          <li><i class="fas fa-check-circle"></i> Monitoramento de fadiga e telemetria</li>
+          <li><i class="fas fa-check-circle"></i> ETL e integração com ERPs</li>
+          <li><i class="fas fa-check-circle"></i> PowerBI executivo / KPIs em tempo real</li>
+        </ul>
+      </div>
+      <div class="high-icon">
+        <i class="fas fa-charging-station"></i>
+        <div style="font-weight:800; margin-top: 15px;">powerby</div>
+        <small style="color:#008080;">Logística orientada a dados</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Whatsapp com destaque e ícone -->
+  <div class="cta-whatsapp">
+    <div class="cta-text">
+      <h3>Pronto para elevar sua operação?</h3>
+      <p>Fale diretamente comigo via WhatsApp e solicite uma proposta personalizada.</p>
+      <p style="font-size: 0.9rem; margin-top: 8px;"><i class="fas fa-phone-alt"></i> (16) 99383-0355</p>
+    </div>
+    <a href="https://wa.me/5516993830355?text=Olá%2C%20vim%20pelo%20site%20e%20tenho%20interesse%20nos%20serviços%20de%20Control%20Tower%20e%20Gestão%20de%20Frotas!" 
+       class="btn-whatsapp" target="_blank">
+      <i class="fab fa-whatsapp"></i> Falar no WhatsApp
+    </a>
+  </div>
+
+  <!-- Footer com replicação dos ícones + crédito -->
+  <footer>
+    <div>© 2026 Baccagin · Control Tower & Sourcing de Transportes | Todos os direitos reservados</div>
+    <div class="footer-icons">
+      <a href="https://wa.me/5516993830355" target="_blank" style="color:#25D366; margin-right: 18px; font-size: 1.6rem;"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.instagram.com/baccaginn1/" target="_blank" style="color:#E4405F; font-size: 1.6rem;"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+</div>
+
+<!-- Adicional: garantir que todos os links abrem WhatsApp e Instagram corretamente -->
+<!-- O número de telefone foi utilizado no formato internacional 55 (Brasil) + 16 + 993830355, removendo o 9? o número original era "16993830355" que entendemos: DDD 16 + 993830355 (9 dígitos móvel). Para WhatsApp usamos 5516993830355. -->
+<!-- Instagram está exatamente como solicitado: https://www.instagram.com/baccaginn1/ -->
+<!-- clique em qualquer ícone de WhatsApp abre o app web / mobile. Além disso, todos os ícones estão com target _blank para conforto. -->
+</body>
+</html>
