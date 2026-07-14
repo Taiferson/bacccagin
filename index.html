@@ -1,520 +1,1134 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Baccagin | Control Tower & Sourcing de Transportes</title>
-  <!-- Font Awesome 6 (gratuito, ícones) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Fonts: Inter + Outros -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Bacca Log · Futurista · Control Tower</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts: Inter (corpo) + Orbitron (futurista) + Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;600;700;800;900&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        /* ----- RESET & BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f5f7fc;
-      color: #1A2C3E;
-      scroll-behavior: smooth;
-    }
+        :root {
+            --gold: #f5c842;
+            --gold-glow: rgba(245, 200, 66, 0.25);
+            --dark-bg: #07080a;
+            --card-bg: rgba(20, 22, 30, 0.65);
+            --border-glass: rgba(255, 215, 0, 0.08);
+        }
 
-    /* Efeito gradiente de fundo sutil */
-    .bg-glow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background: radial-gradient(circle at 10% 20%, rgba(0, 102, 102, 0.03), rgba(2, 48, 71, 0.02));
-    }
+        body {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #eaeef2;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
 
-    /* Header / Navbar */
-    .navbar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 0 16px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
+        /* ----- FUNDO FUTURISTA (grid + animação) ----- */
+        .bg-cyber {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                linear-gradient(rgba(245, 200, 66, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 200, 66, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            background-color: #07080a;
+        }
 
-    .logo h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #0B3B3F, #008080);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+        .bg-cyber::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(245, 200, 66, 0.04), transparent 60%),
+                        radial-gradient(circle at 70% 80%, rgba(0, 200, 255, 0.02), transparent 50%);
+            animation: pulseGlow 8s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
 
-    .logo p {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #4A627A;
-      letter-spacing: 0.3px;
-    }
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
 
-    .social-header {
-      display: flex;
-      gap: 20px;
-    }
+        /* ----- ELEMENTOS FLUTUANTES (orb) ----- */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+            animation: floatOrb 14s infinite alternate ease-in-out;
+        }
+        .orb1 {
+            width: 500px;
+            height: 500px;
+            top: -10%;
+            right: -10%;
+            background: rgba(245, 200, 66, 0.04);
+        }
+        .orb2 {
+            width: 400px;
+            height: 400px;
+            bottom: -10%;
+            left: -10%;
+            background: rgba(0, 180, 255, 0.03);
+            animation-duration: 18s;
+        }
 
-    .social-icon {
-      font-size: 1.7rem;
-      transition: all 0.2s ease;
-      color: #2c3e50;
-      background: white;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.05);
-      transition: transform 0.2s, background 0.2s;
-    }
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-40px, 40px) scale(1.1); }
+        }
 
-    .social-icon i {
-      font-size: 1.8rem;
-    }
+        /* ----- NAVBAR (glassmorphism + futurista) ----- */
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px;
+            margin-top: 16px;
+            border-radius: 80px;
+            background: rgba(10, 12, 18, 0.65);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+        }
+        .navbar:hover {
+            border-color: rgba(245, 200, 66, 0.15);
+            box-shadow: 0 20px 50px -8px rgba(245, 200, 66, 0.04);
+        }
 
-    .social-icon:hover {
-      transform: translateY(-3px);
-      background: #ffffff;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
+        .logo h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(245, 200, 66, 0.08);
+        }
+        .logo h1 span {
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(245, 200, 66, 0.15);
+        }
+        .logo p {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #8a8f9a;
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+        }
 
-    .whatsapp-icon {
-      color: #25D366;
-    }
-    .instagram-icon {
-      color: #E4405F;
-    }
+        .social-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    /* Hero Section */
-    .hero {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 40px;
-      padding: 48px 0 64px;
-    }
+        .social-icon {
+            font-size: 1.3rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            color: #8a8f9a;
+        }
+        .social-icon:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 12px 30px rgba(245, 200, 66, 0.08);
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(245, 200, 66, 0.04);
+        }
+        .whatsapp-icon:hover { color: #25d366; border-color: #25d366; }
+        .instagram-icon:hover { color: #e4405f; border-color: #e4405f; }
 
-    .hero-content {
-      flex: 1.2;
-    }
+        /* Botão Comunidade Fretes (destacado) */
+        .btn-comunidade {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gold);
+            color: #07080a;
+            padding: 10px 22px;
+            border-radius: 60px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 0 20px rgba(245, 200, 66, 0.05);
+            text-transform: uppercase;
+        }
+        .btn-comunidade i {
+            font-size: 1.1rem;
+        }
+        .btn-comunidade:hover {
+            background: #ffffff;
+            color: #07080a;
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(245, 200, 66, 0.15);
+        }
 
-    .hero-badge {
-      background: #EFF6F6;
-      display: inline-block;
-      padding: 6px 14px;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #006D77;
-      margin-bottom: 20px;
-    }
+        /* ----- HERO (moderno, com badge animado) ----- */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 50px;
+            padding: 70px 0 60px;
+            min-height: 70vh;
+        }
 
-    .hero-content h2 {
-      font-size: 3rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 20px;
-      color: #0A2B33;
-    }
+        .hero-content {
+            flex: 1.2;
+        }
 
-    .hero-content h2 span {
-      background: linear-gradient(120deg, #008080, #20B2AA);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+        .hero-badge {
+            background: rgba(245, 200, 66, 0.04);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 18px 6px 12px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(245, 200, 66, 0.08);
+            backdrop-filter: blur(4px);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+        .hero-badge i {
+            font-size: 0.8rem;
+            background: rgba(245, 200, 66, 0.08);
+            padding: 4px 6px;
+            border-radius: 30px;
+        }
 
-    .hero-content p {
-      font-size: 1.1rem;
-      line-height: 1.5;
-      color: #2C475E;
-      margin-bottom: 32px;
-      max-width: 550px;
-    }
+        .hero-content h2 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+        .hero-content h2 span {
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(245, 200, 66, 0.08);
+            position: relative;
+        }
+        .hero-content h2 span::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            filter: blur(2px);
+            opacity: 0.4;
+        }
 
-    .hero-stats {
-      display: flex;
-      gap: 32px;
-      margin-bottom: 28px;
-    }
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #9aa2b0;
+            max-width: 540px;
+            margin-bottom: 32px;
+            font-weight: 400;
+            line-height: 1.7;
+        }
 
-    .stat {
-      font-weight: 700;
-    }
-    .stat-number {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #006D77;
-    }
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px 40px;
+            margin-bottom: 20px;
+        }
 
-    .hero-image {
-      flex: 0.9;
-      background: linear-gradient(145deg, #D9E8E6, #C2D9D6);
-      border-radius: 40px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 25px 35px -12px rgba(0,0,0,0.1);
-    }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(8px);
+            padding: 8px 0;
+            border-bottom: 2px solid rgba(245, 200, 66, 0.08);
+            transition: border-color 0.3s ease;
+        }
+        .stat-item:hover {
+            border-color: var(--gold);
+        }
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+        .stat-number .gold {
+            color: var(--gold);
+        }
+        .stat-label {
+            font-weight: 500;
+            color: #7a8290;
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
 
-    .hero-image i {
-      font-size: 8rem;
-      color: #2C6E6B;
-      opacity: 0.8;
-    }
+        .hero-image {
+            flex: 0.9;
+            background: radial-gradient(circle at 30% 30%, rgba(245, 200, 66, 0.02), transparent 70%);
+            border-radius: 60px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent, rgba(245, 200, 66, 0.02), transparent, rgba(245, 200, 66, 0.02), transparent);
+            animation: spinGlow 20s linear infinite;
+        }
+        @keyframes spinGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hero-image:hover {
+            transform: scale(1.01);
+            border-color: rgba(245, 200, 66, 0.08);
+        }
+        .hero-image i {
+            font-size: 6.5rem;
+            color: var(--gold);
+            opacity: 0.7;
+            filter: drop-shadow(0 8px 30px rgba(245, 200, 66, 0.05));
+            position: relative;
+            z-index: 1;
+        }
+        .hero-image .sub-icon {
+            font-size: 3.6rem;
+            margin-left: 14px;
+            color: var(--gold);
+            opacity: 0.4;
+        }
+        .hero-image .image-label {
+            font-weight: 700;
+            margin-top: 20px;
+            color: #c0c8d4;
+            letter-spacing: 1.2px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 24px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* Seção serviços principais */
-    .services {
-      padding: 70px 0;
-    }
+        /* ----- SEÇÃO TÍTULO (com linha glow) ----- */
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+        .section-title .gold {
+            color: var(--gold);
+        }
+        .section-sub {
+            color: #8a92a0;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+        .section-divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 16px auto 0;
+            border-radius: 10px;
+            filter: blur(1px);
+        }
 
-    .section-title {
-      text-align: center;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    .section-sub {
-      text-align: center;
-      color: #4a627a;
-      margin-bottom: 48px;
-      font-size: 1rem;
-    }
+        /* ----- CARDS (glass + hover 3D) ----- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
 
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 32px;
-    }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            padding: 32px 24px;
+            border-radius: 40px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(145deg, rgba(245, 200, 66, 0.02), transparent 60%);
+            z-index: -1;
+            border-radius: 40px;
+        }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 40px;
+            background: linear-gradient(135deg, rgba(245, 200, 66, 0.1), transparent 50%, rgba(245, 200, 66, 0.02));
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .card:hover {
+            transform: perspective(800px) rotateX(2deg) rotateY(2deg) translateY(-10px);
+            border-color: rgba(245, 200, 66, 0.12);
+            box-shadow: 0 30px 60px -20px rgba(245, 200, 66, 0.06), 0 0 40px rgba(245, 200, 66, 0.02);
+            background: rgba(25, 28, 38, 0.8);
+        }
+        .card:hover::after {
+            opacity: 1;
+        }
 
-    .card {
-      background: white;
-      padding: 28px 24px;
-      border-radius: 28px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04);
-      transition: all 0.25s ease;
-      border: 1px solid rgba(0,0,0,0.03);
-    }
+        .card-icon {
+            font-size: 2.4rem;
+            background: rgba(245, 200, 66, 0.03);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            color: var(--gold);
+            border: 1px solid rgba(245, 200, 66, 0.04);
+            transition: all 0.4s ease;
+        }
+        .card:hover .card-icon {
+            background: rgba(245, 200, 66, 0.06);
+            box-shadow: 0 0 30px rgba(245, 200, 66, 0.02);
+        }
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        .card p {
+            color: #9aa2b0;
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 35px -12px rgba(0, 109, 119, 0.15);
-      border-color: rgba(0, 109, 119, 0.2);
-    }
+        /* ----- AGENCIAMENTO (destaque com borda dupla) ----- */
+        .travel-section {
+            margin: 60px 0 70px;
+        }
 
-    .card-icon {
-      font-size: 2.5rem;
-      background: #E9F5F4;
-      width: 65px;
-      height: 65px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      color: #006D77;
-    }
+        .travel-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 50px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 60px;
+            padding: 50px 54px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        .travel-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 62px;
+            background: linear-gradient(135deg, rgba(245, 200, 66, 0.08), transparent 50%, rgba(245, 200, 66, 0.02));
+            z-index: -1;
+            filter: blur(2px);
+        }
+        .travel-wrapper:hover {
+            border-color: rgba(245, 200, 66, 0.06);
+            box-shadow: 0 40px 80px -20px rgba(245, 200, 66, 0.02);
+        }
 
-    .card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
+        .travel-text {
+            flex: 1.2;
+        }
 
-    .card p {
-      color: #3D5A73;
-      line-height: 1.45;
-    }
+        .travel-text h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        .travel-text h3 i {
+            color: var(--gold);
+            margin-right: 12px;
+        }
 
-    /* Seção de alta performance + sourcing */
-    .highlights {
-      background: #FFFFFFE6;
-      border-radius: 48px;
-      margin: 40px 0 60px;
-      padding: 50px 40px;
-      box-shadow: 0 20px 35px rgba(0,0,0,0.02);
-      border: 1px solid #eef2f5;
-    }
+        .travel-text .highlight-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245, 200, 66, 0.02);
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 20px;
+            border: 1px solid rgba(245, 200, 66, 0.04);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
 
-    .flex-highlights {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .travel-text p {
+            color: #b0b8c6;
+            margin-bottom: 18px;
+            max-width: 580px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
 
-    .high-text {
-      flex: 1.3;
-    }
-    .high-text h3 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    .high-text ul {
-      list-style: none;
-      margin-top: 20px;
-    }
-    .high-text li {
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 500;
-    }
-    .high-text li i {
-      color: #00A896;
-      font-size: 1.3rem;
-      width: 26px;
-    }
+        .travel-text ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+        .travel-text li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-weight: 500;
+            color: #d0d8e0;
+        }
+        .travel-text li i {
+            color: var(--gold);
+            font-size: 1.2rem;
+            width: 28px;
+            text-shadow: 0 0 20px rgba(245, 200, 66, 0.02);
+        }
 
-    .high-icon {
-      flex: 0.7;
-      text-align: center;
-      background: #F0F7F5;
-      border-radius: 50px;
-      padding: 25px;
-    }
-    .high-icon i {
-      font-size: 5rem;
-      color: #008080;
-    }
+        .travel-text .commission-badge {
+            margin-top: 24px;
+            background: linear-gradient(135deg, rgba(245, 200, 66, 0.02), rgba(0, 0, 0, 0.3));
+            color: var(--gold);
+            padding: 12px 28px;
+            border-radius: 80px;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 1px solid rgba(245, 200, 66, 0.04);
+            font-family: 'Orbitron', sans-serif;
+            backdrop-filter: blur(4px);
+        }
+        .travel-text .commission-badge i {
+            margin-right: 12px;
+        }
 
-    /* Call to action whatsapp */
-    .cta-whatsapp {
-      background: linear-gradient(115deg, #0F4C5C, #128C7E);
-      border-radius: 36px;
-      padding: 40px 32px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin: 40px 0 50px;
-      color: white;
-    }
+        .travel-icon {
+            flex: 0.8;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 40px 20px;
+            border: 1px solid rgba(255, 215, 0, 0.02);
+        }
+        .travel-icon i {
+            font-size: 6rem;
+            color: var(--gold);
+            opacity: 0.6;
+            filter: drop-shadow(0 8px 30px rgba(245, 200, 66, 0.02));
+        }
+        .travel-icon .small-label {
+            font-weight: 700;
+            margin-top: 16px;
+            color: #9aa2b0;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
 
-    .cta-text h3 {
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
-    .cta-text p {
-      margin-top: 10px;
-      opacity: 0.9;
-    }
-    .btn-whatsapp {
-      background: white;
-      padding: 14px 32px;
-      border-radius: 60px;
-      text-decoration: none;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      color: #075E54;
-      transition: 0.2s;
-      font-size: 1.1rem;
-    }
-    .btn-whatsapp i {
-      font-size: 1.6rem;
-    }
-    .btn-whatsapp:hover {
-      background: #f0f0f0;
-      transform: scale(1.02);
-    }
+        /* ----- HIGHLIGHTS (dashboard style) ----- */
+        .highlights {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 60px;
+            margin: 40px 0 60px;
+            padding: 56px 50px;
+            border: 1px solid rgba(255, 215, 0, 0.02);
+            box-shadow: 0 20px 50px -16px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+        }
+        .highlights:hover {
+            border-color: rgba(245, 200, 66, 0.04);
+        }
 
-    /* Rodapé */
-    footer {
-      border-top: 1px solid #DFE6E9;
-      padding: 32px 0;
-      margin-top: 40px;
-      text-align: center;
-      color: #5F7F9A;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .flex-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    .footer-icons a {
-      font-size: 1.7rem;
-      margin-left: 20px;
-      text-decoration: none;
-    }
+        .high-text {
+            flex: 1.3;
+        }
+        .high-text h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+        .high-text h3 i {
+            color: var(--gold);
+            margin-right: 12px;
+        }
+        .high-text p {
+            color: #b0b8c6;
+            max-width: 550px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        .high-text ul {
+            list-style: none;
+            margin-top: 24px;
+        }
+        .high-text li {
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-weight: 500;
+            color: #d0d8e0;
+        }
+        .high-text li i {
+            color: var(--gold);
+            font-size: 1.2rem;
+            width: 28px;
+        }
 
-    @media (max-width: 800px) {
-      .hero-content h2 {
-        font-size: 2.2rem;
-      }
-      .navbar {
-        flex-direction: column;
-        gap: 15px;
-      }
-      .cta-whatsapp {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-      }
-      .footer-icons {
-        margin-top: 15px;
-      }
-      footer {
-        flex-direction: column;
-        gap: 15px;
-      }
-    }
-    @media (max-width: 550px) {
-      .hero-stats {
-        flex-wrap: wrap;
-      }
-    }
-  </style>
+        .high-icon {
+            flex: 0.7;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 60px;
+            padding: 36px 20px;
+            border: 1px solid rgba(255, 215, 0, 0.02);
+            backdrop-filter: blur(4px);
+        }
+        .high-icon i {
+            font-size: 5.5rem;
+            color: var(--gold);
+            opacity: 0.5;
+        }
+        .high-icon .power-label {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            margin-top: 16px;
+            color: var(--gold);
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+        }
+        .high-icon small {
+            color: #7a8290;
+            font-weight: 400;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ----- CTA (pulse neon) ----- */
+        .cta-whatsapp {
+            background: linear-gradient(135deg, rgba(20, 22, 30, 0.9), rgba(10, 12, 18, 0.95));
+            border-radius: 60px;
+            padding: 48px 44px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 50px;
+            border: 1px solid rgba(245, 200, 66, 0.04);
+            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-whatsapp::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent, rgba(245, 200, 66, 0.02), transparent, rgba(245, 200, 66, 0.02), transparent);
+            animation: spinGlow 30s linear infinite;
+            pointer-events: none;
+        }
+        .cta-whatsapp:hover {
+            border-color: rgba(245, 200, 66, 0.06);
+            transform: scale(1.005);
+        }
+
+        .cta-text {
+            position: relative;
+            z-index: 1;
+        }
+        .cta-text h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+        .cta-text h3 span {
+            color: var(--gold);
+        }
+        .cta-text p {
+            opacity: 0.8;
+            margin-top: 6px;
+            font-weight: 300;
+            color: #b0b8c6;
+        }
+        .cta-text .phone {
+            font-size: 1rem;
+            margin-top: 10px;
+            opacity: 0.7;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .btn-whatsapp {
+            background: var(--gold);
+            padding: 18px 42px;
+            border-radius: 80px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            color: #07080a;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 1.1rem;
+            box-shadow: 0 8px 30px rgba(245, 200, 66, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        .btn-whatsapp i {
+            font-size: 1.8rem;
+        }
+        .btn-whatsapp:hover {
+            background: #ffffff;
+            color: #07080a;
+            transform: scale(1.04) translateY(-2px);
+            box-shadow: 0 16px 40px rgba(245, 200, 66, 0.12);
+            border-color: var(--gold);
+        }
+
+        /* ----- FOOTER ----- */
+        footer {
+            border-top: 1px solid rgba(255, 215, 0, 0.02);
+            padding: 32px 0;
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #5a6270;
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        .footer-icons a {
+            font-size: 1.6rem;
+            margin-left: 24px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            color: #5a6270;
+        }
+        .footer-icons a:hover {
+            color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        /* ----- RESPONSIVIDADE ----- */
+        @media (max-width: 900px) {
+            .hero-content h2 {
+                font-size: 3rem;
+            }
+            .travel-wrapper {
+                flex-direction: column;
+                text-align: center;
+                padding: 36px 28px;
+            }
+            .travel-text p {
+                max-width: 100%;
+            }
+            .travel-text ul {
+                display: inline-block;
+                text-align: left;
+            }
+            .cta-whatsapp {
+                flex-direction: column;
+                text-align: center;
+                gap: 28px;
+                padding: 36px 24px;
+            }
+            .highlights {
+                padding: 36px 24px;
+            }
+            .flex-highlights {
+                flex-direction: column;
+                text-align: center;
+            }
+            .high-text ul {
+                display: inline-block;
+                text-align: left;
+            }
+            .hero-stats {
+                gap: 16px 28px;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 16px;
+                border-radius: 40px;
+                padding: 20px;
+                top: 12px;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .social-header {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .hero-content h2 {
+                font-size: 2.4rem;
+            }
+            .hero-stats {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .hero-image i {
+                font-size: 4.5rem;
+            }
+            .hero-image .sub-icon {
+                font-size: 2.2rem;
+            }
+            .card {
+                padding: 24px 18px;
+            }
+            .travel-wrapper {
+                padding: 24px 16px;
+                border-radius: 40px;
+            }
+            .travel-icon i {
+                font-size: 4.5rem;
+            }
+            .high-icon i {
+                font-size: 4rem;
+            }
+            .btn-whatsapp {
+                padding: 14px 24px;
+                font-size: 0.95rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .travel-text .commission-badge {
+                font-size: 0.9rem;
+                padding: 10px 18px;
+            }
+            .travel-text h3 {
+                font-size: 1.8rem;
+            }
+            .cta-text h3 {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            footer {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .footer-icons a {
+                margin: 0 12px;
+            }
+            .btn-comunidade {
+                font-size: 0.65rem;
+                padding: 8px 14px;
+            }
+            .btn-comunidade i {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="bg-glow"></div>
-<div class="container">
-  <!-- Header -->
-  <div class="navbar">
-    <div class="logo">
-      <h1>BACCAGIN<span style="color:#008080">.</span></h1>
-      <p>Control Tower & Sourcing de Transportes</p>
-    </div>
-    <div class="social-header">
-      <!-- Link WhatsApp com ícone e número correto, abre app web ou nativo -->
-      <a href="https://wa.me/5516993830355?text=Olá%2C%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20servi%C3%A7os%20de%20log%C3%ADstica!" 
-         class="social-icon whatsapp-icon" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-      <!-- Link Instagram correto -->
-      <a href="https://www.instagram.com/baccaginn1/" class="social-icon instagram-icon" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-instagram"></i>
-      </a>
-    </div>
-  </div>
+    <!-- Fundo Cyber Grid + Orbs -->
+    <div class="bg-cyber"></div>
+    <div class="floating-orb orb1"></div>
+    <div class="floating-orb orb2"></div>
 
-  <!-- Hero principal -->
-  <div class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">✔️ Alta Performance & Gestão de Riscos</div>
-      <h2>Potência em <span>Logística</span> <br> e Controle de Frotas</h2>
-      <p>Control Tower + Sourcing especializado. Monitoramento em tempo real, performance de transportes e agenciamento de veículos. Soluções para quem exige eficiência e redução de custos.</p>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-number">+98%</span><br>Entregas no prazo</div>
-        <div class="stat"><span class="stat-number">-22%</span><br>Custo operacional</div>
-        <div class="stat"><span class="stat-number">24/7</span><br>Monitoramento ativo</div>
-      </div>
-    </div>
-    <div class="hero-image">
-      <i class="fas fa-truck-ramp-box"></i>
-      <i class="fas fa-chart-line" style="font-size: 3.5rem; margin-left: 12px;"></i>
-      <div style="font-weight:600; margin-top:16px;">PowerBy Baccagin</div>
-    </div>
-  </div>
+    <div class="container">
+        <!-- ====== NAVBAR ====== -->
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Bacca <span>Log</span></h1>
+                <p>Control Tower · Sourcing · Fretes</p>
+            </div>
+            <div class="social-header">
+                <!-- Ícones sociais existentes -->
+                <a href="https://wa.me/5516993830355?text=Olá%2C%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es!"
+                class="social-icon whatsapp-icon" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/baccaginn1/" class="social-icon instagram-icon" target="_blank" rel="noopener">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <!-- NOVO: Link para Comunidade Fretes -->
+            <a href="https://chat.whatsapp.com/HBk2a0Tfs5l3uxJGguimAh" class="btn-comunidade" target="_blank" rel="noopener">
+                <i class="fas fa-users"></i> Comunidade Fretes
+            </a>
+        </div>
+    </nav>
 
-  <!-- Grid de serviços completos -->
-  <div class="services">
-    <div class="section-title">Soluções Integradas</div>
-    <div class="section-sub">Gestão de Frotas · Riscos · Sistemas de Alta Performance · Agenciamento</div>
-    <div class="cards-grid">
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-tower-cell"></i></div>
-        <h3>Control Tower</h3>
-        <p>Central de comando unificada: rastreamento, cross-docking, indicadores em tempo real e tomada de decisão ágil. Visibilidade ponta a ponta da sua cadeia.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-handshake"></i></div>
-        <h3>Sourcing de Transportes</h3>
-        <p>Análise de mercado, negociação com carriers e seleção estratégica de parceiros. Reduza custos sem comprometer a qualidade e o prazo.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
-        <h3>Gestão de Frotas</h3>
-        <p>Manutenção preventiva, telemetria, controle de combustível e indicadores de performance (KPI’s) para frota própria ou terceirizada.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
-        <h3>Gestão de Riscos</h3>
-        <p>Mapeamento de rotas, compliance, seguros, análise de sinistros e planos de contingência. Segurança operacional em cada etapa.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-car-side"></i></div>
-        <h3>Agenciamento de Veículos</h3>
-        <p>Renovação, locação e aquisição inteligente de veículos leves e pesados. Melhores condições com fornecedores credenciados.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-chart-simple"></i></div>
-        <h3>Monitoramento & Performance</h3>
-        <p>Dashboards, OKR’s e análise preditiva. Acompanhamento 360º de entregas, motoristas e indicadores logísticos para alta performance.</p>
-      </div>
-    </div>
-  </div>
+    <!-- ====== HERO ====== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-bolt"></i> Alta Performance &amp; Gestão de Riscos
+            </div>
+            <h2>Potência em <span>Logística</span><br />e <span>Fretes</span></h2>
+            <p>
+                Control Tower, sourcing de transportes, gestão de frotas e agenciamento de fretes para
+                grandes players do e‑commerce. Soluções integradas para eficiência e redução de custos.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item"><span class="stat-number">+98<span class="gold">%</span></span><span class="stat-label">entregas no prazo</span></div>
+                <div class="stat-item"><span class="stat-number">-22<span class="gold">%</span></span><span class="stat-label">custo operacional</span></div>
+                <div class="stat-item"><span class="stat-number">24<span class="gold">/7</span></span><span class="stat-label">monitoramento ativo</span></div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div>
+                <i class="fas fa-truck-ramp-box"></i>
+                <i class="fas fa-boxes sub-icon"></i>
+            </div>
+            <div class="image-label">Fretes · E‑commerce · PowerBy</div>
+        </div>
+    </section>
 
-  <!-- Seção de Diferenciais + Sistema de Alta Performance -->
-  <div class="highlights">
-    <div class="flex-highlights">
-      <div class="high-text">
-        <h3><i class="fas fa-microchip"></i> Sistemas de Alta Performance e PowerBy</h3>
-        <p>Plataforma proprietária de integração de dados, analytics e automação de processos logísticos. Tenha uma operação escalável, com relatórios gerenciais e alertas inteligentes.</p>
-        <ul>
-          <li><i class="fas fa-check-circle"></i> Roteirização dinâmica com IA</li>
-          <li><i class="fas fa-check-circle"></i> Monitoramento de fadiga e telemetria</li>
-          <li><i class="fas fa-check-circle"></i> ETL e integração com ERPs</li>
-          <li><i class="fas fa-check-circle"></i> PowerBI executivo / KPIs em tempo real</li>
-        </ul>
-      </div>
-      <div class="high-icon">
-        <i class="fas fa-charging-station"></i>
-        <div style="font-weight:800; margin-top: 15px;">powerby</div>
-        <small style="color:#008080;">Logística orientada a dados</small>
-      </div>
-    </div>
-  </div>
+    <!-- ====== SERVIÇOS ====== -->
+    <section class="services" style="padding: 20px 0 50px;">
+        <div class="section-header">
+            <div class="section-title">Soluções <span class="gold">Integradas</span></div>
+            <div class="section-sub">Gestão de frotas · riscos · sistemas de alta performance · agenciamento</div>
+            <div class="section-divider"></div>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-tower-cell"></i></div>
+                <h3>Control Tower</h3>
+                <p>Central de comando unificada: rastreio, cross‑docking, indicadores em tempo real e decisão ágil.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Sourcing de Transportes</h3>
+                <p>Análise de mercado, negociação com carriers e seleção estratégica de parceiros logísticos.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <h3>Gestão de Frotas</h3>
+                <p>Manutenção preventiva, telemetria, controle de combustível e KPIs de performance.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Gestão de Riscos</h3>
+                <p>Mapeamento de rotas, compliance, seguros, análise de sinistros e planos de contingência.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-car-side"></i></div>
+                <h3>Agenciamento de Veículos</h3>
+                <p>Renovação, locação e aquisição inteligente de veículos leves e pesados com melhores condições.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-chart-simple"></i></div>
+                <h3>Monitoramento &amp; Performance</h3>
+                <p>Dashboards, OKRs e análise preditiva para acompanhamento 360° da operação.</p>
+            </div>
+        </div>
+    </section>
 
-  <!-- CTA Whatsapp com destaque e ícone -->
-  <div class="cta-whatsapp">
-    <div class="cta-text">
-      <h3>Pronto para elevar sua operação?</h3>
-      <p>Fale diretamente comigo via WhatsApp e solicite uma proposta personalizada.</p>
-      <p style="font-size: 0.9rem; margin-top: 8px;"><i class="fas fa-phone-alt"></i> (16) 99383-0355</p>
-    </div>
-    <a href="https://wa.me/5516993830355?text=Olá%2C%20vim%20pelo%20site%20e%20tenho%20interesse%20nos%20serviços%20de%20Control%20Tower%20e%20Gestão%20de%20Frotas!" 
-       class="btn-whatsapp" target="_blank">
-      <i class="fab fa-whatsapp"></i> Falar no WhatsApp
+    <!-- ====== AGENCIAMENTO DE FRETES ====== -->
+    <section class="travel-section">
+        <div class="travel-wrapper">
+            <div class="travel-text">
+                <h3><i class="fas fa-handshake"></i> Agenciamento de Fretes</h3>
+                <div class="highlight-tag"><i class="fas fa-store"></i> Mercado Livre · Shein · Shopee · Amazon · Magalu</div>
+                <p>
+                    Atuamos como elo estratégico entre os maiores players do e‑commerce e a frota de veículos.
+                    Gerenciamos toda a operação de fretes, desde a captação da demanda até a alocação inteligente
+                    das cargas, garantindo agilidade, rastreabilidade e redução de custos.
+                </p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Fechamento de fretes com grandes varejistas digitais</li>
+                    <li><i class="fas fa-check-circle"></i> Alocação otimizada para veículos parceiros</li>
+                    <li><i class="fas fa-check-circle"></i> Monitoramento em tempo real e gestão de KPIs</li>
+                    <li><i class="fas fa-check-circle"></i> Compliance e segurança operacional</li>
+                </ul>
+                <div class="commission-badge">
+                    <i class="fas fa-percent"></i> Comissão por viagem: 3% a 4%
+                </div>
+            </div>
+            <div class="travel-icon">
+                <i class="fas fa-truck"></i>
+                <div class="small-label">Fretes sob medida</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== ALTA PERFORMANCE ====== -->
+    <section class="highlights">
+        <div class="flex-highlights">
+            <div class="high-text">
+                <h3><i class="fas fa-microchip"></i> Sistemas de Alta Performance</h3>
+                <p>
+                    Plataforma proprietária de integração de dados, analytics e automação de processos logísticos.
+                    Tenha uma operação escalável com relatórios gerenciais e alertas inteligentes.
+                </p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Roteirização dinâmica com IA</li>
+                    <li><i class="fas fa-check-circle"></i> Monitoramento de fadiga e telemetria</li>
+                    <li><i class="fas fa-check-circle"></i> ETL e integração com ERPs</li>
+                    <li><i class="fas fa-check-circle"></i> PowerBI executivo / KPIs em tempo real</li>
+                </ul>
+            </div>
+            <div class="high-icon">
+                <i class="fas fa-charging-station"></i>
+                <div class="power-label">powerby</div>
+                <small>Logística orientada a dados</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== CTA WHATSAPP ====== -->
+    <div class="cta-whatsapp">
+        <div class="cta-text">
+            <h3>Pronto para <span>elevar</span> sua operação?</h3>
+            <p>Fale diretamente comigo via WhatsApp e solicite uma proposta personalizada.</p>
+            <p class="phone"><i class="fas fa-phone-alt"></i> (16) 99383-0355</p>
+        </div>
+        <a href="https://wa.me/5516993830355?text=Olá%2C%20vim%20pelo%20site%20e%20tenho%20interesse%20nos%20serviços%20de%20agenciamento%20de%20fretes!"
+        class="btn-whatsapp" target="_blank">
+        <i class="fab fa-whatsapp"></i> Falar no WhatsApp
     </a>
-  </div>
-
-  <!-- Footer com replicação dos ícones + crédito -->
-  <footer>
-    <div>© 2026 Baccagin · Control Tower & Sourcing de Transportes | Todos os direitos reservados</div>
-    <div class="footer-icons">
-      <a href="https://wa.me/5516993830355" target="_blank" style="color:#25D366; margin-right: 18px; font-size: 1.6rem;"><i class="fab fa-whatsapp"></i></a>
-      <a href="https://www.instagram.com/baccaginn1/" target="_blank" style="color:#E4405F; font-size: 1.6rem;"><i class="fab fa-instagram"></i></a>
-    </div>
-  </footer>
 </div>
 
-<!-- Adicional: garantir que todos os links abrem WhatsApp e Instagram corretamente -->
-<!-- O número de telefone foi utilizado no formato internacional 55 (Brasil) + 16 + 993830355, removendo o 9? o número original era "16993830355" que entendemos: DDD 16 + 993830355 (9 dígitos móvel). Para WhatsApp usamos 5516993830355. -->
-<!-- Instagram está exatamente como solicitado: https://www.instagram.com/baccaginn1/ -->
-<!-- clique em qualquer ícone de WhatsApp abre o app web / mobile. Além disso, todos os ícones estão com target _blank para conforto. -->
+<!-- ====== FOOTER ====== -->
+<footer>
+    <div>© 2026 <strong style="color:#f5c842;">Bacca Log</strong> · Control Tower, Sourcing &amp; Fretes | Todos os direitos reservados</div>
+    <div class="footer-icons">
+        <a href="https://wa.me/5516993830355" target="_blank" style="color:#25d366;">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/baccaginn1/" target="_blank" style="color:#e4405f;">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <!-- Também adicionei no footer para consistência -->
+        <a href="https://chat.whatsapp.com/HBk2a0Tfs5l3uxJGguimAh" target="_blank" style="color:#f5c842;">
+            <i class="fas fa-users"></i>
+        </a>
+    </div>
+</footer>
+</div>
 </body>
 </html>
